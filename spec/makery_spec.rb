@@ -13,6 +13,8 @@ RSpec.describe Makery do
         role: 'guest'
       )
 
+      maker.instantiation_method(:new)
+
       maker.trait(
         :admin,
         role: 'admin'
@@ -30,7 +32,7 @@ RSpec.describe Makery do
 
       maker.trait(
         :with_assn,
-        assn: ->(m) { OpenStruct.make(name: "#{m[:name]} bob") }
+        assn: ->(m) { OpenStruct.make(name: "#{m[:name]} bob", assn: m.obj) }
       )
     end
 
@@ -41,6 +43,8 @@ RSpec.describe Makery do
     expect(OpenStruct.make(:admin).role).to eq('admin')
 
     expect(OpenStruct.make(name: 'joe').name).to eq('joe')
+
+    expect(OpenStruct.make(:delayed_name).name).to eq('del')
 
     expect(OpenStruct.make(:admin, name: 'joe').name).to eq('joe')
     expect(OpenStruct.make(:admin, name: 'joe').role).to eq('admin')
@@ -54,6 +58,19 @@ RSpec.describe Makery do
       OpenStruct.make(:with_assn).assn.name
     ).to eq(
       'bob bob'
+    )
+
+    expect(
+      OpenStruct.make(:delayed_name, :with_assn).assn.name
+    ).to eq(
+      'del bob'
+    )
+
+    o = OpenStruct.make(:with_assn)
+    expect(
+      o.assn.assn
+    ).to eq(
+      o
     )
   end
 end

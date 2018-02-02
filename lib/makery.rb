@@ -15,21 +15,26 @@ module Makery
   end
 
   def self.new_makers
-    Hash.new { |h, k| h[k] = Maker.new(k) }
+    Hash.new { |h, k| h[k] = Factory.new(k) }
   end
 
   # makes stuff
-  Maker = Struct.new(:klass) do
+  Factory = Struct.new(:klass) do
 
     def make(*traits, **override)
-      attrs = to_attrs(*traits).merge(override)
-      attrs = attrs.transform_values { |v| v.respond_to?(:call) ? v.call(attrs) : v }
-
-      klass.new(attrs)
+      Builder.call(base.merge(**trait_attrs(traits), **override), klass, :new)
     end
 
     def base(**attrs)
       @base ||= attrs
+    end
+
+    def instantiation_method(method=:new)
+      @instantiation_method = method
+    end
+
+    def trait_attrs(traits)
+      traits.map { |t| traits_repository[t] }.reduce({}, &:merge)
     end
 
     def trait(name, **attrs)
@@ -40,9 +45,29 @@ module Makery
       @traits ||= {}
     end
 
-    def to_attrs(*traits)
-      merged_traits = traits.map { |t| traits_repository[t] }.reduce({}, &:merge)
-      base.merge(merged_traits)
+  end
+
+  # makes stuff
+  Builder = Struct.new(:attrs, :klass, :instantiation_method) do
+    attr_reader :obj
+    def self.call(*args)
+      new(*args).call
+    end
+
+    def call
+      @obj = klass.send(instantiation_method)
+      transform
+      @obj
+    end
+
+    def transform
+      attrs.transform_values! { |v| v.respond_to?(:call) ? v.call(self) : v }
+      attrs.each { |k, v| @obj.send("#{k}=", v) }
+    end
+
+    def [](attr)
+      a = attrs[attr]
+      a.respond_to?(:call) ? a.call(self) : a
     end
   end
 end
