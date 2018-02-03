@@ -29,7 +29,7 @@ module Makery
       @base ||= attrs
     end
 
-    def instantiation_method(method=:new)
+    def instantiation_method(method = :new)
       @instantiation_method = method
     end
 
@@ -61,7 +61,7 @@ module Makery
     end
 
     def transform
-      attrs.transform_values! { |v| v.respond_to?(:call) ? v.call(self) : v }
+      attrs.each { |k, v| attrs[k] = (v.respond_to?(:call) ? v.call(self) : v) }
       attrs.each { |k, v| @obj.send("#{k}=", v) }
     end
 
