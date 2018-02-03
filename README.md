@@ -30,14 +30,14 @@ Makery.for(klass) do |maker|
   )
 end
 
-klass.makery.foo == 1 #=> true
+Makery[klass].call.foo == 1 #=> true
 ```
 
 * Makery uses anything that responds to call to execute delayed.
 * Pass overrides into the call to maker.
 
 ```ruby
-klass.makery(foo: ->(m) { m[:bar] + 1 }).foo == 3 #=> true
+Makery[klass].call(foo: ->(m) { m[:bar] + 1 }).foo == 3 #=> true
 ```
 
 * Makery uses traits for more complex behavior.
@@ -55,7 +55,7 @@ Makery.for(klass) do |maker|
   )
 end
 
-klass.makery(:big_foo).foo == 10 #=> true
+Makery[klass].call(:big_foo).foo == 10 #=> true
 ```
 
 ### ActiveRecord
