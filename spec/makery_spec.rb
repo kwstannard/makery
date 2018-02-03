@@ -1,5 +1,4 @@
 require 'makery'
-require 'ostruct'
 
 RSpec.describe Makery do
   it "has a version number" do
@@ -7,7 +6,9 @@ RSpec.describe Makery do
   end
 
   it "does something useful" do
-    Makery.for(OpenStruct) do |maker|
+    klass = Struct.new(:name, :role, :assn)
+
+    Makery.for(klass) do |maker|
       maker.base(
         name: 'bob',
         role: 'guest'
@@ -32,41 +33,41 @@ RSpec.describe Makery do
 
       maker.trait(
         :with_assn,
-        assn: ->(m) { OpenStruct.make(name: "#{m[:name]} bob", assn: m.obj) }
+        assn: ->(m) { klass.make(name: "#{m[:name]} bob", assn: m.obj) }
       )
     end
 
-    expect(OpenStruct.make.name).to eq('bob')
-    expect(OpenStruct.make.role).to eq('guest')
+    expect(klass.make.name).to eq('bob')
+    expect(klass.make.role).to eq('guest')
 
-    expect(OpenStruct.make(:admin).name).to eq('bob')
-    expect(OpenStruct.make(:admin).role).to eq('admin')
+    expect(klass.make(:admin).name).to eq('bob')
+    expect(klass.make(:admin).role).to eq('admin')
 
-    expect(OpenStruct.make(name: 'joe').name).to eq('joe')
+    expect(klass.make(name: 'joe').name).to eq('joe')
 
-    expect(OpenStruct.make(:delayed_name).name).to eq('del')
+    expect(klass.make(:delayed_name).name).to eq('del')
 
-    expect(OpenStruct.make(:admin, name: 'joe').name).to eq('joe')
-    expect(OpenStruct.make(:admin, name: 'joe').role).to eq('admin')
+    expect(klass.make(:admin, name: 'joe').name).to eq('joe')
+    expect(klass.make(:admin, name: 'joe').role).to eq('admin')
 
-    expect(OpenStruct.make(:admin, :joe).name).to eq('joe')
-    expect(OpenStruct.make(:admin, :joe).role).to eq('admin')
+    expect(klass.make(:admin, :joe).name).to eq('joe')
+    expect(klass.make(:admin, :joe).role).to eq('admin')
 
-    expect(OpenStruct.make(name: ->(m) { m[:role] + ' joe' }).name).to eq('guest joe')
+    expect(klass.make(name: ->(m) { m[:role] + ' joe' }).name).to eq('guest joe')
 
     expect(
-      OpenStruct.make(:with_assn).assn.name
+      klass.make(:with_assn).assn.name
     ).to eq(
       'bob bob'
     )
 
     expect(
-      OpenStruct.make(:delayed_name, :with_assn).assn.name
+      klass.make(:delayed_name, :with_assn).assn.name
     ).to eq(
       'del bob'
     )
 
-    o = OpenStruct.make(:with_assn)
+    o = klass.make(:with_assn)
     expect(
       o.assn.assn
     ).to eq(
