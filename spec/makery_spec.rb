@@ -7,8 +7,9 @@ RSpec.describe Makery do
 
   it "does something useful" do
     klass = Struct.new(:name, :role, :assn)
+    makery = Makery.dup
 
-    Makery.for(klass) do |maker|
+    makery.for(klass) do |maker|
       maker.base(
         name: 'bob',
         role: 'guest'
@@ -33,41 +34,41 @@ RSpec.describe Makery do
 
       maker.trait(
         :with_assn,
-        assn: ->(m) { klass.make(name: "#{m[:name]} bob", assn: m.obj) }
+        assn: ->(m) { makery[klass].call(name: "#{m[:name]} bob", assn: m.obj) }
       )
     end
 
-    expect(klass.make.name).to eq('bob')
-    expect(klass.make.role).to eq('guest')
+    expect(makery[klass].call.name).to eq('bob')
+    expect(makery[klass].call.role).to eq('guest')
 
-    expect(klass.make(:admin).name).to eq('bob')
-    expect(klass.make(:admin).role).to eq('admin')
+    expect(makery[klass].call(:admin).name).to eq('bob')
+    expect(makery[klass].call(:admin).role).to eq('admin')
 
-    expect(klass.make(name: 'joe').name).to eq('joe')
+    expect(makery[klass].call(name: 'joe').name).to eq('joe')
 
-    expect(klass.make(:delayed_name).name).to eq('del')
+    expect(makery[klass].call(:delayed_name).name).to eq('del')
 
-    expect(klass.make(:admin, name: 'joe').name).to eq('joe')
-    expect(klass.make(:admin, name: 'joe').role).to eq('admin')
+    expect(makery[klass].call(:admin, name: 'joe').name).to eq('joe')
+    expect(makery[klass].call(:admin, name: 'joe').role).to eq('admin')
 
-    expect(klass.make(:admin, :joe).name).to eq('joe')
-    expect(klass.make(:admin, :joe).role).to eq('admin')
+    expect(makery[klass].call(:admin, :joe).name).to eq('joe')
+    expect(makery[klass].call(:admin, :joe).role).to eq('admin')
 
-    expect(klass.make(name: ->(m) { m[:role] + ' joe' }).name).to eq('guest joe')
+    expect(makery[klass].call(name: ->(m) { m[:role] + ' joe' }).name).to eq('guest joe')
 
     expect(
-      klass.make(:with_assn).assn.name
+      makery[klass].call(:with_assn).assn.name
     ).to eq(
       'bob bob'
     )
 
     expect(
-      klass.make(:delayed_name, :with_assn).assn.name
+      makery[klass].call(:delayed_name, :with_assn).assn.name
     ).to eq(
       'del bob'
     )
 
-    o = klass.make(:with_assn)
+    o = makery[klass].call(:with_assn)
     expect(
       o.assn.assn
     ).to eq(

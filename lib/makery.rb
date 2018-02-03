@@ -3,11 +3,11 @@ require 'makery/version'
 # do factory stuff
 module Makery
   def self.for(klass)
-    klass.define_singleton_method(:make) do |*traits, **override|
-      Makery.makers[klass].make(*traits, **override)
-    end
-
     yield makers[klass]
+  end
+
+  def self.[](klass)
+    makers[klass]
   end
 
   def self.makers
@@ -21,7 +21,7 @@ module Makery
   # makes stuff
   Factory = Struct.new(:klass) do
 
-    def make(*traits, **override)
+    def call(*traits, **override)
       Builder.call(base.merge(**trait_attrs(traits), **override), klass, :new)
     end
 
