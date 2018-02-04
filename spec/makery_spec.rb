@@ -74,4 +74,17 @@ RSpec.describe Makery do
       o
     )
   end
+
+  it 'has sequences' do
+    klass = Struct.new(:email)
+    makery = Makery.dup
+
+    maker = makery[klass]
+    maker.base(
+      email: ->(m) { "user#{m.id}@biz.com" }
+    )
+
+    expect(makery[klass].call.email).to eq("user1@biz.com")
+    expect(makery[klass].call.email).to eq("user2@biz.com")
+  end
 end

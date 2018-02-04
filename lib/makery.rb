@@ -14,14 +14,19 @@ module Makery
     Hash.new { |h, k| h[k] = Factory.new(k) }
   end
 
-  module DSL
-  end
-
   # makes stuff
   Factory = Struct.new(:klass) do
 
+    attr_accessor :count
+    def initialize(*args)
+      self.count = 1
+      super
+    end
+
     def call(*traits, **override)
-      Builder.call(base.merge(**trait_attrs(traits), **override), klass, :new)
+      Builder.call(base.merge(**trait_attrs(traits), **override), klass, :new, count)
+    ensure
+      self.count = count + 1
     end
 
     def base(**attrs)
@@ -47,7 +52,7 @@ module Makery
   end
 
   # makes stuff
-  Builder = Struct.new(:attrs, :klass, :instantiation_method) do
+  Builder = Struct.new(:attrs, :klass, :instantiation_method, :id) do
     attr_reader :obj
     def self.call(*args)
       new(*args).call

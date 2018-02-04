@@ -14,55 +14,79 @@ bundle
 
 ### What kinds of classes can use this?
 
-Any class needs writer methods corresponding to each attribute and that should be it.
+Any class used needs writer methods corresponding to each attribute and that should be it.
 
 ### Defining a factory
 
-* Makery tries to avoid DSLs.
+Makery tries to avoid DSLs by taking attribute hashes instead.
 
 ```ruby
 klass = Struct.new(:foo, :bar)
 
-Makery.for(klass) do |maker|
-  maker.base(
-    foo: 1
-    bar: 2
-  )
-end
+maker = Makery[klass]
+maker.base(
+  foo: 1
+  bar: 2
+)
+```
 
+#### Using the factory
+
+```ruby
 Makery[klass].call.foo == 1 #=> true
 ```
 
-* Makery uses anything that responds to call to execute delayed.
-* Pass overrides into the call to maker.
+Makery can use anything that responds to call for delayed execution. There is a
+single argument passed for accessing the other attributes. You can also pass
+overrides into the call to maker.
 
 ```ruby
 Makery[klass].call(foo: ->(m) { m[:bar] + 1 }).foo == 3 #=> true
 ```
 
-* Makery uses traits for more complex behavior.
+Makery uses traits for more complex behavior. Attributes are overrridden by
+merging the attribute hashes.
 
 ```ruby
-Makery.for(klass) do |maker|
-  maker.base(
-    foo: 1
-    bar: 2
-  )
+maker = Makery[klass]
+maker.base(
+  foo: 1
+  bar: 2
+)
 
-  maker.trait(
-    :big_foo,
-    foo: 10
-  )
-end
+maker.trait(
+  :big_foo,
+  foo: 10
+)
 
 Makery[klass].call(:big_foo).foo == 10 #=> true
 ```
 
 ### ActiveRecord
 
-This operates independently of ActiveRecord or any ORM. Just call save if you need to create the record in the database.
+Makery operates independently of ActiveRecord or any ORM.
 
-### That is too long
+```ruby
+maker = Makery[User]
+maker.base(
+  email: "email@email.com"
+  password: "a password"
+)
+
+Makery[User].call.save
+```
+
+### Sequences
+
+```ruby
+maker = Makery[User]
+maker.base(
+  email: ->(m) { "email#{m.count}@biz.com" }
+)
+
+Makery[User].call.email #=> "email1@biz.com"
+Makery[User].call.email #=> "email2@biz.com"
+```
 
 ## Development
 
