@@ -9,34 +9,33 @@ RSpec.describe Makery do
     klass = Struct.new(:name, :role, :assn)
     makery = Makery.dup
 
-    makery.for(klass) do |maker|
-      maker.base(
-        name: 'bob',
-        role: 'guest'
-      )
+    maker = makery[klass]
+    maker.base(
+      name: 'bob',
+      role: 'guest'
+    )
 
-      maker.instantiation_method(:new)
+    maker.instantiation_method(:new)
 
-      maker.trait(
-        :admin,
-        role: 'admin'
-      )
+    maker.trait(
+      :admin,
+      role: 'admin'
+    )
 
-      maker.trait(
-        :joe,
-        name: 'joe'
-      )
+    maker.trait(
+      :joe,
+      name: 'joe'
+    )
 
-      maker.trait(
-        :delayed_name,
-        name: proc { 'del' }
-      )
+    maker.trait(
+      :delayed_name,
+      name: proc { 'del' }
+    )
 
-      maker.trait(
-        :with_assn,
-        assn: ->(m) { makery[klass].call(name: "#{m[:name]} bob", assn: m.obj) }
-      )
-    end
+    maker.trait(
+      :with_assn,
+      assn: ->(m) { makery[klass].call(name: "#{m[:name]} bob", assn: m.obj) }
+    )
 
     expect(makery[klass].call.name).to eq('bob')
     expect(makery[klass].call.role).to eq('guest')

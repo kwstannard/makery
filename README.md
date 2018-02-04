@@ -62,6 +62,8 @@ Makery[klass].call(:big_foo).foo == 10 #=> true
 
 This operates independently of ActiveRecord or any ORM. Just call save if you need to create the record in the database.
 
+### That is too long
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rake spec` to run the tests.

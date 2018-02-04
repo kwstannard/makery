@@ -2,10 +2,6 @@ require 'makery/version'
 
 # do factory stuff
 module Makery
-  def self.for(klass)
-    yield makers[klass]
-  end
-
   def self.[](klass)
     makers[klass]
   end
@@ -16,6 +12,9 @@ module Makery
 
   def self.new_makers
     Hash.new { |h, k| h[k] = Factory.new(k) }
+  end
+
+  module DSL
   end
 
   # makes stuff
