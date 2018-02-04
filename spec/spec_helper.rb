@@ -1,10 +1,8 @@
 require "bundler/setup"
 require "makery"
-require 'pry'
+require "pry"
 
-unless ENV['NO_COVERAGE']# || RSpec.configuration.files_to_run.one?
-  require 'simplecov'
-end
+require "simplecov" unless ENV["NO_COVERAGE"]
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

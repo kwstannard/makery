@@ -1,4 +1,4 @@
-require 'makery/version'
+require "makery/version"
 
 # do factory stuff
 module Makery
@@ -16,15 +16,16 @@ module Makery
 
   # makes stuff
   Factory = Struct.new(:klass) do
-
-    attr_accessor :count
+    attr_accessor :count, :traits_repository
     def initialize(*args)
       self.count = 1
+      self.traits_repository = {}
       super
     end
 
     def call(*traits, **override)
-      Builder.call(base.merge(**trait_attrs(traits), **override), klass, :new, count)
+      attrs = base.merge(**trait_attrs(traits), **override)
+      Builder.call(attrs, klass, :new, count)
     ensure
       self.count = count + 1
     end
@@ -44,11 +45,6 @@ module Makery
     def trait(name, **attrs)
       traits_repository[name] = attrs
     end
-
-    def traits_repository
-      @traits ||= {}
-    end
-
   end
 
   # makes stuff
