@@ -81,11 +81,11 @@ Makery[User].call.save
 ```ruby
 maker = Makery[User]
 maker.base(
-  email: ->(m) { "email#{m.count}@biz.com" }
+  email: ->(m) { "user-#{m.id}@biz.com" }
 )
 
-Makery[User].call.email #=> "email1@biz.com"
-Makery[User].call.email #=> "email2@biz.com"
+Makery[User].call.email #=> "user-1@biz.com"
+Makery[User].call.email #=> "user-2@biz.com"
 ```
 
 ## Development
