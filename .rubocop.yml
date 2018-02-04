@@ -1,0 +1,15 @@
+require: rubocop-rspec
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - it
+    - describe
+
+RSpec/MultipleExpectations:
+  Max: 4
+
+RSpec/ExampleLength:
+  Max: 10
