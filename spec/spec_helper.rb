@@ -1,7 +1,5 @@
 require "bundler/setup"
-require "makery"
 require "pry"
-
 require "simplecov" unless ENV["NO_COVERAGE"]
 
 RSpec.configure do |config|
