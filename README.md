@@ -12,13 +12,9 @@ bundle
 
 ## Usage
 
-### What kinds of classes can use this?
-
-Any class used needs writer methods corresponding to each attribute and that should be it.
-
 ### Defining a factory
 
-Makery tries to avoid DSLs by taking attribute hashes instead.
+Makery leverages named arguments everywhere to avoid use of DSLs.
 
 ```ruby
 klass = Struct.new(:foo, :bar)
@@ -36,7 +32,7 @@ maker.base(
 Makery[klass].call.foo == 1 #=> true
 ```
 
-Makery can use anything that responds to call for delayed execution. There is a
+Makery uses anything that responds to `call` for delayed execution. There is a
 single argument passed for accessing the other attributes. You can also pass
 overrides into the call to maker.
 
@@ -62,9 +58,33 @@ maker.trait(
 Makery[klass].call(:big_foo).foo == 10 #=> true
 ```
 
-### ActiveRecord
+#### Sequences
 
-Makery operates independently of ActiveRecord or any ORM.
+```ruby
+maker = Makery[User]
+maker.base(
+  email: ->(m) { "user-#{m.index}@biz.com" }
+)
+
+Makery[User].call.email #=> "user-1@biz.com"
+Makery[User].call.email #=> "user-2@biz.com"
+```
+
+### What kinds of classes can use this?
+
+Any class used needs writer methods corresponding to each attribute and that should be it.
+
+### How does this work behind the scenes?
+
+It is all about hashes and merging. The base attribute set is always there at the bottom and
+each trait merges over the base. Finally the named arguments are merged over all of that. Once
+that is merged, any attribute values that respond to `call` are called. Finally, an instance
+of the class being factoried has its attributes set from the attribute hash.
+
+### ActiveRecord and Sequel
+
+Makery operates independently of ActiveRecord or any ORM. For now you could do one of the
+following.
 
 ```ruby
 maker = Makery[User]
@@ -73,19 +93,19 @@ maker.base(
   password: "a password"
 )
 
-Makery[User].call.save
-```
+user = Makery[User].call
+user.save
 
-### Sequences
+# or
 
-```ruby
-maker = Makery[User]
-maker.base(
-  email: ->(m) { "user-#{m.id}@biz.com" }
-)
+user = Makery[User].call.tap(&:save)
 
-Makery[User].call.email #=> "user-1@biz.com"
-Makery[User].call.email #=> "user-2@biz.com"
+# or
+
+def create(klass, *args)
+  Makery[klass].call(*args).tap(&:save)
+end
+create(User)
 ```
 
 ## Development

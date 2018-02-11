@@ -7,18 +7,18 @@ Gem::Specification.new do |spec|
   spec.name          = "makery"
   spec.version       = Makery::VERSION
   spec.authors       = ["Kelly Wolf Stannard"]
-  spec.email         = ["kstannard@mdsol.com"]
+  spec.email         = ["kwstannard@gmail.com"]
 
   spec.summary       = "A minimalist factory gem"
   spec.description   = "A minimalist factory gem"
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/kwstannard/makery"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
   # 'allowed_push_host' to allow pushing to a single host or delete this
   # section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "http://mygemserver.com"
+    spec.metadata["allowed_push_host"] = "https://rubygems.org"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.files         = Dir.glob("lib/**/*.rb")
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "appraisal"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "rake"
