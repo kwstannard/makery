@@ -70,6 +70,31 @@ Makery[User].call.email #=> "user-1@biz.com"
 Makery[User].call.email #=> "user-2@biz.com"
 ```
 
+#### Associations
+
+The object passed to call in delayed execuption provides an `obj` method for creating
+associations between objects. Use it where you would pass the instance.
+
+For example if you have a one to many association that could be described like so:
+
+```ruby
+boss = User.new
+employee = User.new
+boss.employees = [employee]
+```
+
+Makery could replicate it like this:
+
+```ruby
+maker = Makery[User]
+maker.base(
+  boss: ->(m) { Makery[User].call(employees: [m.obj]) }
+)
+
+employee = maker.call
+boss = employee.boss
+```
+
 ### What kinds of classes can use this?
 
 Any class used needs writer methods corresponding to each attribute and that should be it.

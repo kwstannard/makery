@@ -86,6 +86,16 @@ RSpec.describe Makery do
     expect(o.assn.assn).to eq(o)
   end
 
+  it "allows use of associations within other factories" do
+    makery[klass].trait(
+      :use_assn,
+      name: ->(m) { "#{m[:assn].name} rob" },
+      assn: ->(m) { makery[klass].call(assn: m.obj) }
+    )
+
+    expect(makery[klass].call(:use_assn).name).to eq("bob rob")
+  end
+
   it "has sequences" do
     expect(
       makery[klass].call(name: ->(m) { "user#{m.id}" }).name
