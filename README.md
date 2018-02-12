@@ -63,7 +63,7 @@ Makery[klass].call(:big_foo).foo == 10 #=> true
 ```ruby
 maker = Makery[User]
 maker.base(
-  email: ->(m) { "user-#{m.index}@biz.com" }
+  email: ->(m) { "user-#{m.id}@biz.com" }
 )
 
 Makery[User].call.email #=> "user-1@biz.com"
