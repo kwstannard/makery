@@ -14,5 +14,4 @@ module Makery
   def self.new_makers
     Hash.new { |h, k| h[k] = Factory.new(k) }
   end
-
 end
