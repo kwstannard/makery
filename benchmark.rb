@@ -1,6 +1,6 @@
-require 'factory_bot'
-require 'makery'
-require 'benchmark/ips'
+require "factory_bot"
+require "makery"
+require "benchmark/ips"
 
 foo = Struct.new(:bar)
 delayed = Struct.new(:bar)
@@ -14,7 +14,7 @@ Makery[foo].trait(
 )
 
 Makery[delayed].base(
-  bar: ->(m) { 5 }
+  bar: ->(_m) { 5 }
 )
 
 FactoryBot.factories.clear
