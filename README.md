@@ -17,6 +17,16 @@ bundle
 Makery leverages named arguments everywhere to avoid use of DSLs.
 
 ```ruby
+class Post
+  attr_accessor :foo, :bar
+end
+
+maker = Makery[Post]
+maker.base(
+  foo: 1,
+  bar: 2
+)
+
 klass = Struct.new(:foo, :bar)
 
 maker = Makery[klass]
@@ -24,12 +34,21 @@ maker.base(
   foo: 1
   bar: 2
 )
+
+class User < ActiveRecord::Base
+end
+
+Makery[User].base(
+  email: "foo@bar.com",
+)
 ```
 
 #### Using the factory
 
 ```ruby
+Makery[Post].call.foo == 1 #=> true
 Makery[klass].call.foo == 1 #=> true
+Makery[User].call.email == "foo@bar.com" #=> true
 ```
 
 Makery uses anything that responds to `call` for delayed execution. There is a
