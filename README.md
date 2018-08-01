@@ -46,8 +46,12 @@ Makery[User].base(
 #### Using the factory
 
 ```ruby
-Makery[Post].call.foo == 1 #=> true
-Makery[klass].call.foo == 1 #=> true
+post = Makery[Post].call
+post.foo #=> 1
+
+obj = Makery[klass].call
+obj.foo #=> 1
+
 Makery[User].call.email == "foo@bar.com" #=> true
 ```
 
