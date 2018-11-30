@@ -26,7 +26,9 @@ maker.base(
   foo: 1,
   bar: 2
 )
+```
 
+```ruby
 klass = Struct.new(:foo, :bar)
 
 maker = Makery[klass]
@@ -34,7 +36,9 @@ maker.base(
   foo: 1
   bar: 2
 )
+```
 
+```ruby
 class User < ActiveRecord::Base
 end
 
