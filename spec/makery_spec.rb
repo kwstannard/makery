@@ -5,10 +5,6 @@ RSpec.describe Makery do
   let(:klass) { Struct.new(:name, :role, :assn) }
   let(:maker) { makery[klass] }
 
-  it "has a version number" do
-    expect(described_class::VERSION).not_to be nil
-  end
-
   before do
     maker.base(
       name: "bob",
@@ -36,6 +32,10 @@ RSpec.describe Makery do
       :with_assn,
       assn: ->(m) { makery[klass].call(name: "#{m[:name]} bob", assn: m.obj) }
     )
+  end
+
+  it "has a version number" do
+    expect(described_class::VERSION).not_to be nil
   end
 
   it "uses the base attributes if nothing else is specified" do
