@@ -160,6 +160,19 @@ end
 create(User)
 ```
 
+### Custom Factories
+
+A way to make custom factories has been provided via the `#[]=` method. Anything can be stored,
+but you probably want to use a proc.
+
+```ruby
+Makery["user registration request body"] = ->(username: 'joe', password: '1234') {
+  {user: {username: username, password: password} }.to_json
+}
+
+Makery["user registration request body"].call
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rake spec` to run the tests.

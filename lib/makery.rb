@@ -7,6 +7,10 @@ module Makery
     makers[klass]
   end
 
+  def self.[]=(key, callable)
+    makers[key] = callable
+  end
+
   def self.makers
     @makers ||= new_makers
   end

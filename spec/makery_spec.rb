@@ -104,4 +104,9 @@ RSpec.describe Makery do
       makery[klass].call(name: ->(m) { "user#{m.id}" }).name
     ).to eq("user2")
   end
+
+  it "allows custom fatories" do
+    makery[:custom] = ->(attrs) { attrs }
+    expect(makery[:custom].call(foo: 1)).to eq(foo: 1)
+  end
 end
