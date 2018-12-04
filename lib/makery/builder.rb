@@ -8,11 +8,11 @@ module Makery
 
     def call
       @obj = klass.send(instantiation_method)
-      transform
+      evaluate_delayed_attrs
       @obj
     end
 
-    def transform
+    def evaluate_delayed_attrs
       attrs.each { |k, v| attrs[k] = (v.respond_to?(:call) ? v.call(self) : v) }
       attrs.each { |k, v| @obj.send("#{k}=", v) }
     end
