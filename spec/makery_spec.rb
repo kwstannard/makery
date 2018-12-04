@@ -2,7 +2,7 @@ require "makery"
 
 RSpec.describe Makery do
   let(:makery) { described_class.dup }
-  let(:klass) { Struct.new(:name, :role, :assn) }
+  let(:klass) { Struct.new(:name, :role, :association) }
   let(:maker) { makery[klass] }
 
   before do
@@ -29,8 +29,8 @@ RSpec.describe Makery do
     )
 
     maker.trait(
-      :with_assn,
-      assn: ->(m) { makery[klass].call(name: "#{m[:name]} bob", assn: m.obj) }
+      :with_association,
+      association: ->(m) { makery[klass].call(name: "#{m[:name]} bob", association: m.obj) }
     )
   end
 
@@ -75,25 +75,25 @@ RSpec.describe Makery do
 
   it "the builder's obj can be used for associations" do
     expect(
-      makery[klass].call(:with_assn).assn.name
+      makery[klass].call(:with_association).association.name
     ).to eq("bob bob")
 
     expect(
-      makery[klass].call(:delayed_name, :with_assn).assn.name
+      makery[klass].call(:delayed_name, :with_association).association.name
     ).to eq("del bob")
 
-    o = makery[klass].call(:with_assn)
-    expect(o.assn.assn).to eq(o)
+    o = makery[klass].call(:with_association)
+    expect(o.association.association).to eq(o)
   end
 
   it "allows use of associations within other factories" do
     makery[klass].trait(
-      :use_assn,
-      name: ->(m) { "#{m[:assn].name} rob" },
-      assn: ->(m) { makery[klass].call(assn: m.obj) }
+      :use_association,
+      name: ->(m) { "#{m[:association].name} rob" },
+      association: ->(m) { makery[klass].call(association: m.obj) }
     )
 
-    expect(makery[klass].call(:use_assn).name).to eq("bob rob")
+    expect(makery[klass].call(:use_association).name).to eq("bob rob")
   end
 
   it "has sequences" do
