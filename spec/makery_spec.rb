@@ -11,8 +11,6 @@ RSpec.describe Makery do
       role: "guest"
     )
 
-    maker.instantiation_method(:new)
-
     maker.trait(
       :admin,
       role: "admin"

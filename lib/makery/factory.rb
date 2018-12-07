@@ -21,10 +21,6 @@ module Makery
       @base ||= attrs
     end
 
-    def instantiation_method(method = :new)
-      @instantiation_method = method
-    end
-
     def trait_attrs(traits)
       traits.map { |t| traits_repository[t] }.reduce({}, &:merge)
     end
