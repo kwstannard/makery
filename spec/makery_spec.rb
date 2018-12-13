@@ -28,7 +28,9 @@ RSpec.describe Makery do
 
     maker.trait(
       :with_association,
-      association: ->(m) { makery[klass].call(name: "#{m[:name]} bob", association: m.obj) }
+      association: lambda do |m|
+        makery[klass].call(name: "#{m[:name]} bob", association: m.obj)
+      end
     )
   end
 
