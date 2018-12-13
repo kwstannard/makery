@@ -109,4 +109,10 @@ RSpec.describe Makery do
     makery[:custom] = ->(attrs) { attrs }
     expect(makery[:custom].call(foo: 1)).to eq(foo: 1)
   end
+
+  context "when the class doesn't respond to the instantiation method" do
+    it "throws a useful error" do
+      expect { makery[Module.new].call }.to raise_error(NoMethodError)
+    end
+  end
 end
