@@ -3,6 +3,8 @@
 Welcome to Makery. Your [simple, lightweight, opinionated, elegant, minimal](https://programmingisterrible.com/post/65781074112/devils-dictionary-of-programming)
 choice for testing factories.
 
+Why Makery and not FactoryBot? After using FactoryBot in several projects I realized that it didn't make sense that I couldn't define relationships outside of callback blocks. I tried changing FactoryBot first but was unsuccessful. Then I decided to just make a new library. The new library was <100 loc and I was able to fairly easily replace FactoryBot in a mature project, so here it is. I hope others find it useful.
+
 ## Installation
 
 ```shell
