@@ -3,7 +3,10 @@
 Welcome to Makery. Your [simple, lightweight, opinionated, elegant, minimal](https://programmingisterrible.com/post/65781074112/devils-dictionary-of-programming)
 choice for testing factories.
 
-Why Makery and not FactoryBot? After using FactoryBot in several projects I realized that it didn't make sense that I couldn't define relationships outside of callback blocks. I tried changing FactoryBot first but was unsuccessful. Then I decided to just make a new library. The new library was <100 loc and I was able to fairly easily replace FactoryBot in a mature project, so here it is. I hope others find it useful.
+Why Makery and not FactoryBot? After using FactoryBot in several projects I realized that it didn't make
+sense that I couldn't define relationships outside of callback blocks. I tried changing FactoryBot first
+but was unsuccessful. Then I decided to just make a new library. The new library was <100 loc and I was
+able to fairly easily replace FactoryBot in a mature project, so here it is. I hope others find it useful.
 
 ## Installation
 
@@ -16,7 +19,8 @@ bundle
 
 ### Defining a factory
 
-Makery leverages named arguments everywhere to avoid use of DSLs.
+Makery leverages named arguments everywhere to avoid use of DSLs. Create or fetch a factory using `Makery[YourClass]`.
+Then set the base attributes with `#base(attr_hash)`
 
 ```ruby
 class Post
@@ -51,6 +55,8 @@ Makery[User].base(
 
 #### Using the factory
 
+Use `#call` to create a new object of your class.
+
 ```ruby
 post = Makery[Post].call
 post.foo #=> 1
@@ -61,7 +67,7 @@ obj.foo #=> 1
 Makery[User].call.email == "foo@bar.com" #=> true
 ```
 
-Makery uses anything that responds to `call` for delayed execution. There is a
+Makery uses anything that responds to `call` for delayed execution, usually a Proc. There is a
 single argument passed for accessing the other attributes. You can also pass
 overrides into the call to maker.
 
@@ -69,8 +75,8 @@ overrides into the call to maker.
 Makery[klass].call(foo: ->(m) { m[:bar] + 1 }).foo == 3 #=> true
 ```
 
-Makery uses traits for more complex behavior. Attributes are overrridden by
-merging the attribute hashes.
+Makery uses traits to allow further specification of a class. Traits are merged over
+the base attributes.
 
 ```ruby
 maker = Makery[klass]
@@ -137,7 +143,7 @@ of the class being factoried has its attributes set from the attribute hash.
 
 ### ActiveRecord and Sequel
 
-Makery operates independently of ActiveRecord or any ORM. For now you could do one of the
+Makery operates independently of ActiveRecord or any ORM. You could do one of the
 following.
 
 ```ruby
@@ -150,11 +156,7 @@ maker.base(
 user = Makery[User].call
 user.save
 
-# or
-
-user = Makery[User].call.tap(&:save)
-
-# or
+# or a method to handle it like FactoryBot
 
 def create(klass, *args)
   Makery[klass].call(*args).tap(&:save)
@@ -165,7 +167,8 @@ create(User)
 ### Custom Factories
 
 A way to make custom factories has been provided via the `#[]=` method. Anything can be stored,
-but you probably want to use a proc.
+but you probably want to use a proc. The following example uses a proc with default arguments to
+create a JSON document.
 
 ```ruby
 Makery["user registration request body"] = ->(username: 'joe', password: '1234') {
