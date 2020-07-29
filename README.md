@@ -3,10 +3,27 @@
 Welcome to Makery. Your [simple, lightweight, opinionated, elegant, minimal](https://programmingisterrible.com/post/65781074112/devils-dictionary-of-programming)
 choice for testing factories.
 
-Why Makery and not FactoryBot? After using FactoryBot in several projects I realized that it didn't make
-sense that I couldn't define relationships outside of callback blocks. I tried changing FactoryBot first
-but was unsuccessful. Then I decided to just make a new library. The new library was <100 loc and I was
-able to fairly easily replace FactoryBot in a mature project, so here it is. I hope others find it useful.
+## Why Makery and not FactoryBot?
+
+### ORM independence
+
+Makery is completely ORM independent. You can use it easily with any complex data object and no special flags needed.
+
+### Instantialize your object relationship graph without hitting the database
+
+You can use Makery's delayed execution blocks to create arbitrarily complex relationships without costly database
+transactions. This allows you to run tests and order of magnitude faster than equivalent tests using FactoryBot.
+
+### Small
+
+Makery is 69 lines of code, a 96% reduction over FactoryBot
+
+### Speed
+
+When just initializing objects, Makery is a 10x-30x speed improvement over FactoryBot. Makery also allows you to
+easily set up relationships between objects without using the database, which is another order of magnitude
+speed boost if you are testing business logic. Run `bundle exec ruby benchmark.rb` and look at `benchmark.rb`
+for more details.
 
 ## Installation
 
