@@ -1,7 +1,6 @@
 # Makery [![Build Status](https://travis-ci.org/kwstannard/makery.svg?branch=master)](https://travis-ci.org/kwstannard/makery)
 
-Welcome to Makery. Your [simple, lightweight, opinionated, elegant, minimal](https://programmingisterrible.com/post/65781074112/devils-dictionary-of-programming)
-choice for testing factories.
+Welcome to Makery. A lightweight and fast factory library.
 
 ## Why Makery over FactoryBot?
 
@@ -12,7 +11,7 @@ transactions. This allows you to run tests and order of magnitude faster than eq
 
 ### Small
 
-Makery is 69 lines of code, a 96% reduction over FactoryBot
+Makery is 69 lines of code, a 96% reduction over FactoryBot.
 
 ### Speed
 
@@ -23,7 +22,12 @@ for more details.
 
 ### ORM independence
 
-Makery is completely ORM independent. You can use it easily with any complex data object and no special flags needed.
+Makery is completely ORM independent. You can use it easily with any data object class and no special flags needed.
+
+## Why FactoryBot over Makery
+
+- You like multiple factory definitions instead of traits
+- You need the before or after callbacks for things besides setting up associations
 
 ## Installation
 
