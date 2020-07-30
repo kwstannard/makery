@@ -3,11 +3,7 @@
 Welcome to Makery. Your [simple, lightweight, opinionated, elegant, minimal](https://programmingisterrible.com/post/65781074112/devils-dictionary-of-programming)
 choice for testing factories.
 
-## Why Makery and not FactoryBot?
-
-### ORM independence
-
-Makery is completely ORM independent. You can use it easily with any complex data object and no special flags needed.
+## Why Makery over FactoryBot?
 
 ### Instantialize your object relationship graph without hitting the database
 
@@ -24,6 +20,10 @@ When just initializing objects, Makery is a 10x-30x speed improvement over Facto
 easily set up relationships between objects without using the database, which is another order of magnitude
 speed boost if you are testing business logic. Run `bundle exec ruby benchmark.rb` and look at `benchmark.rb`
 for more details.
+
+### ORM independence
+
+Makery is completely ORM independent. You can use it easily with any complex data object and no special flags needed.
 
 ## Installation
 
