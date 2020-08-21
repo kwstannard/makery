@@ -41,7 +41,7 @@ RSpec.describe Makery do
     maker.trait(
       :with_association,
       association: lambda do |m|
-        makery[klass].call(name: "#{m[:name]} bob", association: m.obj)
+        makery[klass].call(name: "#{m[:name]} bob", association: m.object)
       end
     )
   end
@@ -94,7 +94,7 @@ RSpec.describe Makery do
     ).to eq("guest joe")
   end
 
-  it "the builder's obj can be used for associations" do
+  it "the builder's object can be used for associations" do
     expect(
       makery[klass].call(:with_association).association.name
     ).to eq("bob bob")
@@ -111,7 +111,7 @@ RSpec.describe Makery do
     makery[klass].trait(
       :use_association,
       name: ->(m) { "#{m[:association].name} rob" },
-      association: ->(m) { makery[klass].call(association: m.obj) }
+      association: ->(m) { makery[klass].call(association: m.object) }
     )
 
     expect(makery[klass].call(:use_association).name).to eq("bob rob")

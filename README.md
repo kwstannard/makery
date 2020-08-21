@@ -82,8 +82,8 @@ Use `#call` to create a new object of your class.
 post = Makery[Post].call
 post.foo #=> 1
 
-obj = Makery[klass].call
-obj.foo #=> 1
+object = Makery[klass].call
+object.foo #=> 1
 
 Makery[User].call.email == "foo@bar.com" #=> true
 ```
@@ -128,7 +128,7 @@ Makery[User].call.email #=> "user-2@biz.com"
 
 #### Associations
 
-The object passed to call in delayed execuption provides an `obj` method for creating
+The object passed to call in delayed execuption provides an `object` method for creating
 associations between objects. Use it where you would pass the instance.
 
 For example if you have a one to many association that could be described like so:
@@ -144,7 +144,7 @@ Makery could replicate it like this:
 ```ruby
 maker = Makery[User]
 maker.base(
-  boss: ->(m) { Makery[User].call(employees: [m.obj]) }
+  boss: ->(m) { Makery[User].call(employees: [m.object]) }
 )
 
 employee = maker.call
