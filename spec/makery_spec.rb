@@ -27,6 +27,18 @@ RSpec.describe Makery do
     )
 
     maker.trait(
+      :name_uses_role,
+      name: ->(m) { "bob " + m[:role] },
+      role: 'ceo'
+    )
+
+    maker.trait(
+      :role_uses_name,
+      name: "bob",
+      role: ->(m) { m[:name] + ' ceo' }
+    )
+
+    maker.trait(
       :with_association,
       association: lambda do |m|
         makery[klass].call(name: "#{m[:name]} bob", association: m.obj)
@@ -65,6 +77,15 @@ RSpec.describe Makery do
     expect(makery[klass].call(:admin, :joe).name).to eq("joe")
     expect(makery[klass].call(:admin, :joe).role).to eq("admin")
     expect(makery[klass].call(:delayed_name, :joe).name).to eq("joe")
+  end
+
+  context 'when using one attr in another with delayed execution' do
+    it 'works in any order' do
+      expect(makery[klass].call(:name_uses_role).name)
+        .to eq('bob ceo')
+      expect(makery[klass].call(:role_uses_name).role)
+        .to eq('bob ceo')
+    end
   end
 
   it "sends the builder as the first argument to call" do
