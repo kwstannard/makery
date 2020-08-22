@@ -86,6 +86,13 @@ RSpec.describe Makery do
       expect(makery[klass].call(:role_uses_name).role)
         .to eq('bob ceo')
     end
+
+    it 'can be used twice with a new attr' do
+      expect(makery[klass].call(:name_uses_role).name)
+        .to eq('bob ceo')
+      expect(makery[klass].call(:name_uses_role, role: 'janitor').name)
+        .to eq('bob janitor')
+    end
   end
 
   it "sends the builder as the first argument to call" do
@@ -107,7 +114,7 @@ RSpec.describe Makery do
     expect(o.association.association).to eq(o)
   end
 
-  it "allows use of associations within other factories" do
+  it "allows use of association attributes within parent" do
     makery[klass].trait(
       :use_association,
       name: ->(m) { "#{m[:association].name} rob" },
