@@ -27,6 +27,6 @@ module Makery
       possible_val = attrs[attr]
       evaluated_attrs[attr] = possible_val.respond_to?(:call) ? possible_val.call(self) : possible_val
     end
-    alias [] evaluate_attr
+    alias_method :[], :evaluate_attr
   end
 end
