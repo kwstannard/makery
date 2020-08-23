@@ -88,8 +88,8 @@ RSpec.describe Makery do
     end
 
     it 'can be used twice with a new attr' do
-      expect(makery[klass].call(:name_uses_role).name)
-        .to eq('bob ceo')
+      expect(makery[klass].call(:name_uses_role, role: 'ba').name)
+        .to eq('bob ba')
       expect(makery[klass].call(:name_uses_role, role: 'janitor').name)
         .to eq('bob janitor')
     end
