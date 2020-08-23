@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "A minimalist factory gem"
   spec.description   = "A minimalist factory gem"
   spec.homepage      = "https://github.com/kwstannard/makery"
+  spec.required_ruby_version = '>= 2.3'
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
