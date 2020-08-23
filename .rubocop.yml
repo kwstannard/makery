@@ -7,6 +7,7 @@ Metrics/BlockLength:
   ExcludedMethods:
     - it
     - describe
+    - before
 
 RSpec/MultipleExpectations:
   Max: 4
