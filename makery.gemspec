@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "makery/version"
@@ -11,8 +13,8 @@ Gem::Specification.new do |spec|
   spec.summary       = "A minimalist factory gem"
   spec.description   = "A minimalist factory gem"
   spec.homepage      = "https://github.com/kwstannard/makery"
-  spec.required_ruby_version = '>= 2.3'
-  spec.license       = "MIT"
+  spec.required_ruby_version = ">= 2.3"
+  spec.license = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
   # 'allowed_push_host' to allow pushing to a single host or delete this

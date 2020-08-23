@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "makery"
 
 RSpec.describe Makery do
@@ -29,13 +31,13 @@ RSpec.describe Makery do
     maker.trait(
       :name_uses_role,
       name: ->(m) { "bob " + m[:role] },
-      role: 'ceo'
+      role: "ceo"
     )
 
     maker.trait(
       :role_uses_name,
       name: "bob",
-      role: ->(m) { m[:name] + ' ceo' }
+      role: ->(m) { m[:name] + " ceo" }
     )
 
     maker.trait(
@@ -79,19 +81,19 @@ RSpec.describe Makery do
     expect(makery[klass].call(:delayed_name, :joe).name).to eq("joe")
   end
 
-  context 'when using one attr in another with delayed execution' do
-    it 'works in any order' do
+  context "when using one attr in another with delayed execution" do
+    it "works in any order" do
       expect(makery[klass].call(:name_uses_role).name)
-        .to eq('bob ceo')
+        .to eq("bob ceo")
       expect(makery[klass].call(:role_uses_name).role)
-        .to eq('bob ceo')
+        .to eq("bob ceo")
     end
 
-    it 'can be used twice with a new attr' do
-      expect(makery[klass].call(:name_uses_role, role: 'ba').name)
-        .to eq('bob ba')
-      expect(makery[klass].call(:name_uses_role, role: 'janitor').name)
-        .to eq('bob janitor')
+    it "can be used twice with a new attr" do
+      expect(makery[klass].call(:name_uses_role, role: "ba").name)
+        .to eq("bob ba")
+      expect(makery[klass].call(:name_uses_role, role: "janitor").name)
+        .to eq("bob janitor")
     end
   end
 

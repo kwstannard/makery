@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Makery
   # Builder builds the instance
   Builder = Struct.new(:attrs, :klass, :instantiation_method, :id) do
