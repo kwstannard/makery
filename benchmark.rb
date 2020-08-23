@@ -22,10 +22,10 @@ Makery[delayed].base(
 FactoryBot.factories.clear
 FactoryBot.define do
   factory :foo, class: foo do
-    bar 1
+    bar { 1 }
 
     trait :big do
-      bar 2
+      bar { 2 }
     end
   end
 
