@@ -14,7 +14,7 @@ module Makery
 
     def call(*traits, **override)
       attrs = base.merge(**trait_attrs(traits), **override)
-      Builder.call(attrs, klass, :new, count)
+      Builder.call(attrs, klass.new, count)
     ensure
       self.count = count + 1
     end
