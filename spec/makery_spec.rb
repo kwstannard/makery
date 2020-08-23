@@ -30,14 +30,14 @@ RSpec.describe Makery do
 
     maker.trait(
       :name_uses_role,
-      name: ->(m) { "bob " + m[:role] },
+      name: ->(m) { "bob #{m[:role]}" },
       role: "ceo"
     )
 
     maker.trait(
       :role_uses_name,
       name: "bob",
-      role: ->(m) { m[:name] + " ceo" }
+      role: ->(m) { "#{m[:name]} ceo" }
     )
 
     maker.trait(
@@ -99,7 +99,7 @@ RSpec.describe Makery do
 
   it "sends the builder as the first argument to call" do
     expect(
-      makery[klass].call(name: ->(m) { m[:role] + " joe" }).name
+      makery[klass].call(name: ->(m) { "#{m[:role]} joe" }).name
     ).to eq("guest joe")
   end
 
