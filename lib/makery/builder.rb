@@ -1,29 +1,32 @@
 module Makery
   # Builder builds the instance
   Builder = Struct.new(:attrs, :klass, :instantiation_method, :id) do
-    attr_accessor :object
+    attr_accessor :object, :evaluated_attrs
     def self.call(*args)
       new(*args).call
     end
 
     def call
       self.object = klass.send(instantiation_method)
+      self.evaluated_attrs = {}
+
       evaluate_delayed_attrs
       set_object_attributes
       object
     end
 
     def evaluate_delayed_attrs
-      attrs.each { |k, v| attrs[k] = (v.respond_to?(:call) ? v.call(self) : v) }
+      attrs.each_key { |k| evaluate_attr(k) }
     end
 
     def set_object_attributes
-      attrs.each { |k, v| object.send("#{k}=", v) }
+      evaluated_attrs.each { |k, v| object.send("#{k}=", v) }
     end
 
-    def [](attr)
-      a = attrs[attr]
-      a.respond_to?(:call) ? a.call(self) : a
+    def evaluate_attr(attr)
+      possible_val = attrs[attr]
+      evaluated_attrs[attr] = possible_val.respond_to?(:call) ? possible_val.call(self) : possible_val
     end
+    alias [] evaluate_attr
   end
 end
