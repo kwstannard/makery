@@ -11,11 +11,11 @@ transactions. This allows you to run tests and order of magnitude faster than eq
 
 ### Small
 
-Makery is 69 lines of code, a 96% reduction over FactoryBot.
+Makery is 62 lines of code, a 96% reduction over FactoryBot.
 
 ### Speed
 
-When just initializing objects, Makery is a 10x-30x speed improvement over FactoryBot. Makery also allows you to
+When just initializing objects, Makery is a 12x-37x speed improvement over FactoryBot. Makery also allows you to
 easily set up relationships between objects without using the database, which is another order of magnitude
 speed boost if you are testing business logic. Run `bundle exec ruby benchmark.rb` and look at `benchmark.rb`
 for more details.
@@ -119,7 +119,7 @@ Makery[klass].call(:big_foo).foo == 10 #=> true
 ```ruby
 maker = Makery[User]
 maker.base(
-  email: ->(m) { "user-#{m.id}@biz.com" }
+  email: ->(m) { "user-#{m.i}@biz.com" }
 )
 
 Makery[User].call.email #=> "user-1@biz.com"
