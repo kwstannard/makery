@@ -15,12 +15,10 @@ module Makery
 
     def call
       attrs.each_key { |k| evaluate_attr(k) }
-      object
     end
 
     def evaluate_attr(attr)
-      val = attrs[attr].makery_eval(self)
-      object.send("#{attr}=", val)
+      object.send("#{attr}=", attrs[attr].makery_eval(self))
     end
     alias_method :[], :evaluate_attr
   end
