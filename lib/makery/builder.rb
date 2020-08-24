@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-class Object; def makery_eval(_); self; end; end
-Proc.alias_method(:makery_eval, :call)
-
 module Makery
+  using(Module.new do
+    refine(Object) { define_method(:makery_eval) {|_| self } }
+    refine(Proc) { alias_method(:makery_eval, :call) }
+  end)
+
   # Builder builds the instance
   Builder = Struct.new(:attrs, :object, :id) do
 
