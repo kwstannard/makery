@@ -7,16 +7,15 @@ module Makery
   Factory = Struct.new(:klass) do
     attr_accessor :count, :traits_repository
     def initialize(*args)
-      self.count = 1
+      self.count = 0
       self.traits_repository = {}
       super
     end
 
     def call(*traits, **override)
       attrs = base.merge(**trait_attrs(traits), **override)
-      klass.new.tap {|obj| Builder.call(attrs, obj, count) }
-    ensure
       self.count = count + 1
+      klass.new.tap {|obj| Builder.call(attrs, obj, count) }
     end
 
     def base(**attrs)
