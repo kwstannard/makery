@@ -7,7 +7,7 @@ module Makery
   end)
 
   # Builder builds the instance
-  Builder = Struct.new(:attrs, :object, :id) do
+  Builder = Struct.new(:attrs, :object, :i) do
 
     def self.call(*args)
       new(*args).call

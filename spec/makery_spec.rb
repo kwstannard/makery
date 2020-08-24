@@ -128,10 +128,10 @@ RSpec.describe Makery do
 
   it "has sequences" do
     expect(
-      makery[klass].call(name: ->(m) { "user#{m.id}" }).name
+      makery[klass].call(name: ->(m) { "user#{m.i}" }).name
     ).to eq("user1")
     expect(
-      makery[klass].call(name: ->(m) { "user#{m.id}" }).name
+      makery[klass].call(name: ->(m) { "user#{m.i}" }).name
     ).to eq("user2")
   end
 
