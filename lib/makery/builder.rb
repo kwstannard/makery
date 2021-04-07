@@ -2,13 +2,12 @@
 
 module Makery
   using(Module.new do
-    refine(Object) { define_method(:makery_eval) {|_| self } }
+    refine(Object) { define_method(:makery_eval) { |_| self } }
     refine(Proc) { alias_method(:makery_eval, :call) }
   end)
 
   # Builder builds the instance
   Builder = Struct.new(:attrs, :object, :i) do
-
     def self.call(*args)
       new(*args).call
     end
